@@ -3,9 +3,10 @@ import re
 
 def decode_(func):
     def wrapper(*args, **kwargs):
-        data = re.sub("(?:\s*(\/\*([^\*\/])*.*?\*\/)?|(\/\/.*)?)[\s|\x0A]", "", 
-                        func(*args, **kwargs), re.M)
-        return re.sub("\s+", "", data)
+        #data = re.sub("\s*(?:(\/\*([^\*\/])*\*\/)?|(\/\/.*)?)\s+", "",
+        data = func(*args, **kwargs)
+        data = re.sub("(?:\s*(\/\*([^\*\/])*.*?\*\/)?|(\/\/.*)?)\s+", "", data)
+        return data
     return wrapper
 
 @decode_

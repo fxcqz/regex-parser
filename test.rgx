@@ -1,46 +1,50 @@
 ( // could be a mathematical fucntion
     [a-z]+\(?
 )?
-(
-/* just testing
-        multiline
-    comments */
-    [\/\-\+\*]
+( // could have specified this value to be positive or negative
+    [\-\+]
 )?
-(
+( // numeric aspect
     [0-9]+
-    [\.]?
-    [0-9]*?
-    i?
+    (?: // dont need a capture group for floats
+        [\.] // decimal point of the float
+        [0-9]* // multiple precision if it is a float
+    )?
+    i? // possibly a complex number
 )?
-(
+( // some brackets
     [\(]+
 )?
 (
-    (
+    ( // numeric operators
         [\-\+\\\*]
     )?
-    (
+    ( /* second numeric aspect (object of operators)
+         this is same as the above numeric aspect */
         [0-9]+
-        (
+        (?:
             [\.]
             [0-9]+
         )?
         i?
     )?
+    // what the numeric aspect is part of
     [pi|i|z|0-9]
+    // perhaps it has floating point or imaginary aspect too
     [\.]?
     [0-9]*?
     i?
-    (
+    ( // is the value raised to a power
         [\^]
-        [0-9]+
+        [0-9]+ // the power its raised to
+        // and the same old same old as above
         [\.]?
         [0-9]*?
         i?
     )?
 )
 (
-    [/)]+
-    [\^]?
+    [/)]+ // end bracket
+    [\^]? // perhaps this expression is raised 
+          // to the power of another expresion
 )?
