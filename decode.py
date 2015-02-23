@@ -3,8 +3,12 @@ import re
 
 def decode_(func):
     def wrapper(*args, **kwargs):
-        return re.sub("(?:\s*(\/\*([^\*\/])*.*?\*\/)?|(\/\/.*)?)\s+", "",
-                        func(*args, **kwargs))
+        data = func(*args, **kwargs)
+        data = re.sub("\s*\/\/.*", "", data)
+        data = re.sub("\/\*([\s\S]*?)\*\/", "", data)
+        data = [d.lstrip() for d in data.split('\n')]
+        data = [d.rstrip() for d in data]
+        return ''.join(data)
     return wrapper
 
 @decode_
