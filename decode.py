@@ -1,21 +1,23 @@
 import re
 
 
-def decode_regex(regex):
-    return re.sub(r"(?:\s*(\/\*([^\*\/])*.*?\*\/)?|(\/\/.*)?)?\s+", "", regex, re.I|re.M)
+def decode_(func):
+    def wrapper(*args, **kwargs):
+        data = re.sub("(?:\s*(\/\*([^\*\/])*.*?\*\/)?|(\/\/.*)?)[\s|\x0A]", "", 
+                        func(*args, **kwargs), re.M)
+        return re.sub("\s+", "", data)
+    return wrapper
 
-s = """(
-    /* this regex will do
-       something  totally
-       awesome! */
-    [a-z]*? // might need some letters
-    (
-        [0-9]{3} // then the 3 numbers
-    )
-    /* 
-        that was coolo RIGHT?????
-    */
-    )"""
-teststr = "test123"
-print "Decoded regex: ", decode_regex(s)
-print re.sub(decode_regex(s), r"\2 are the numbers yo", teststr)
+@decode_
+def decode_file(filename):
+    contents = None
+    try:
+        with open(filename, 'r') as handle:
+            contents = ''.join(handle.readlines())
+    except IOError as e:
+        print e
+    return contents
+
+@decode_
+def decode(string):
+    return string
