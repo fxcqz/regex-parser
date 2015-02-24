@@ -1,4 +1,5 @@
 import re
+import os
 
 
 def decode_(func):
@@ -11,8 +12,7 @@ def decode_(func):
         return ''.join(data)
     return wrapper
 
-@decode_
-def decode_file(filename):
+def get_file(filename):
     contents = None
     try:
         with open(filename, 'r') as handle:
@@ -23,4 +23,6 @@ def decode_file(filename):
 
 @decode_
 def decode(string):
+    if os.path.isfile(string):
+        return get_file(string)
     return string

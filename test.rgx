@@ -45,6 +45,6 @@
 )
 (
     [/)]+ // end bracket
-    [\^] ? // perhaps this expression is raised 
+    [\^]? // perhaps this expression is raised 
           // to the power of another expresion
 )?
